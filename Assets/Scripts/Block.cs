@@ -1,0 +1,96 @@
+﻿using UnityEngine;
+
+public class Block : MonoBehaviour
+{
+    public enum COLORTYPE
+    {
+        NONE = -1,
+        CYAN = 0,
+        YELLOW,
+        ORANGE,
+        MAGENTA,
+        GREEN,
+        PINK,
+
+        RED,
+        GRAY,
+        CAKE0,
+        CAKE1,
+        NUM,
+    }
+
+    public const float SizeX = 1.0f;
+    public const float SizeY = 1.0f;
+
+    public const int NORMALNUM = (int)COLORTYPE.RED;
+    public const COLORTYPE NORMALFIRST = COLORTYPE.CYAN;
+    public const COLORTYPE NORMALLAST = COLORTYPE.PINK;
+    public const COLORTYPE CAKEFIRST = COLORTYPE.CAKE0;
+    public const COLORTYPE CAKELAST = COLORTYPE.CAKE1;
+
+    public COLORTYPE Color = 0;
+    public static Material[] Materials;
+
+    private Renderer blockRenderer;
+
+    private void Awake()
+    {
+        blockRenderer = GetComponent<Renderer>();
+    }
+
+    public bool IsNormalColorBlock()
+    {
+        return Color >= NORMALFIRST && Color <= NORMALLAST;
+    }
+
+    public bool ISCakeBlock()
+    {
+        return Color >= CAKEFIRST && Color <= CAKELAST;
+    }
+
+    public void SetColorType(COLORTYPE color)
+    {
+        this.Color = color;
+        switch (color)
+        {
+            case COLORTYPE.RED:
+                blockRenderer.material = Materials[(int)color];
+                blockRenderer.material.SetFloat("_BlendRate", 0.0f);
+                break;
+            case COLORTYPE.GRAY:
+                blockRenderer.material = Materials[(int)color];
+                blockRenderer.material.SetFloat("_BlendRate", 1.0f);
+                break;
+            case COLORTYPE.CAKE0:
+                break;
+            default:
+                if (color >= NORMALFIRST && color <= NORMALLAST)
+                {
+                    blockRenderer.material = Materials[(int)color];
+                    blockRenderer.material.SetFloat("_BlendRate", 0.0f);
+                }
+                break;
+        }
+    }
+
+    public void SetVisible(bool isVisible)
+    {
+        blockRenderer.enabled = isVisible;
+    }
+
+    public bool IsVisible()
+    {
+        return blockRenderer.enabled;
+    }
+
+    public static COLORTYPE GetNextNormalColor(COLORTYPE color)
+    {
+        COLORTYPE nextColor = color;
+        if (++nextColor > NORMALLAST)
+        {
+            nextColor = NORMALFIRST;
+        }
+        return nextColor;
+    }
+
+}
