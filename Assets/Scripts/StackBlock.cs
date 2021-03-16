@@ -1,5 +1,7 @@
-﻿public class StackBlock : Block
+﻿
+public class StackBlock : Block
 {
+    // 方块的位置
     public struct BlockIndex
     {
         public int x;
@@ -14,11 +16,6 @@
 
     public BlockIndex Index;
 
-    //private void Start()
-    //{
-    //    transform.position = StackBlockControl.CalcBlockPosition(Index);
-    //}
-
     public void SetUnused()
     {
         SetColorType(COLORTYPE.NONE);
@@ -28,14 +25,14 @@
     public bool IsConnectable()
     {
         var ret = true;
-        if (Color < NORMALFIRST || Color > NORMALLAST)
+        if (ColorType < NORMALFIRST || ColorType > NORMALLAST)
         {
             ret = false;
         }
-        if (Index.y >= StackBlockControl.BlockNumY - 1)
-        {
-            ret = false;
-        }
+        //if (Index.y >= StackBlockControl.BlockNumY - 1)
+        //{
+        //    ret = false;
+        //}
         return ret;
     }
 

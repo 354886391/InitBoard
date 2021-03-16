@@ -2,7 +2,6 @@
 
 public class ConnectChecker
 {
-    private StackBlock[,] blocks;
 
     public enum CONNECTSTATUS
     {
@@ -12,6 +11,7 @@ public class ConnectChecker
         NUM,
     }
 
+    private StackBlock[,] blocks;
     public CONNECTSTATUS[,] connectStatuses;
     public StackBlock.BlockIndex[] connectBlocks;
 
@@ -77,29 +77,29 @@ public class ConnectChecker
                 connectBlocks[0] = index;
                 count = 1;
             }
-            else if (previousColor == blocks[x, y].Color)
+            else if (previousColor == blocks[x, y].ColorType)
             {
                 connectBlocks[count] = index;
                 ++count;
             }
             //Debug.Log("previousColor " + previousColor + " currentColor " + blocks[x, y].Color);
-            if (previousColor == Block.COLORTYPE.NONE || previousColor == blocks[x, y].Color)
+            if (previousColor == Block.COLORTYPE.NONE || previousColor == blocks[x, y].ColorType)
             {
                 if (x > 0)
                 {
-                    count = ConnectRecurse(x - 1, y, blocks[x, y].Color, count);
+                    count = ConnectRecurse(x - 1, y, blocks[x, y].ColorType, count);
                 }
                 if (x < StackBlockControl.BlockNumX - 1)
                 {
-                    count = ConnectRecurse(x + 1, y, blocks[x, y].Color, count);
+                    count = ConnectRecurse(x + 1, y, blocks[x, y].ColorType, count);
                 }
                 if (y > 0)
                 {
-                    count = ConnectRecurse(x, y - 1, blocks[x, y].Color, count);
+                    count = ConnectRecurse(x, y - 1, blocks[x, y].ColorType, count);
                 }
                 if (y < StackBlockControl.BlockNumY - 1)
                 {
-                    count = ConnectRecurse(x, y + 1, blocks[x, y].Color, count);
+                    count = ConnectRecurse(x, y + 1, blocks[x, y].ColorType, count);
                 }
             }
         } while (false);

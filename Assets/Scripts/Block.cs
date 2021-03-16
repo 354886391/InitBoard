@@ -28,49 +28,38 @@ public class Block : MonoBehaviour
     public const COLORTYPE CAKEFIRST = COLORTYPE.CAKE0;
     public const COLORTYPE CAKELAST = COLORTYPE.CAKE1;
 
-    public COLORTYPE Color = 0;
+    public Renderer blockRenderer;
+    public COLORTYPE ColorType = 0;
     public static Material[] Materials;
 
-    private Renderer blockRenderer;
-
-    private void Awake()
+    public void SetColorType(COLORTYPE colorType)
     {
-        blockRenderer = GetComponent<Renderer>();
-    }
-
-    public bool IsNormalColorBlock()
-    {
-        return Color >= NORMALFIRST && Color <= NORMALLAST;
-    }
-
-    public bool ISCakeBlock()
-    {
-        return Color >= CAKEFIRST && Color <= CAKELAST;
-    }
-
-    public void SetColorType(COLORTYPE color)
-    {
-        this.Color = color;
-        switch (color)
+        this.ColorType = colorType;
+        switch (colorType)
         {
             case COLORTYPE.RED:
-                blockRenderer.material = Materials[(int)color];
+                blockRenderer.material = Materials[(int)colorType];
                 blockRenderer.material.SetFloat("_BlendRate", 0.0f);
                 break;
             case COLORTYPE.GRAY:
-                blockRenderer.material = Materials[(int)color];
+                blockRenderer.material = Materials[(int)colorType];
                 blockRenderer.material.SetFloat("_BlendRate", 1.0f);
                 break;
             case COLORTYPE.CAKE0:
                 break;
             default:
-                if (color >= NORMALFIRST && color <= NORMALLAST)
+                if (colorType >= NORMALFIRST && colorType <= NORMALLAST)
                 {
-                    blockRenderer.material = Materials[(int)color];
+                    blockRenderer.material = Materials[(int)colorType];
                     blockRenderer.material.SetFloat("_BlendRate", 0.0f);
                 }
                 break;
         }
+    }
+
+    public void SetPosition(Vector3 position)
+    {
+        transform.position = position;
     }
 
     public void SetVisible(bool isVisible)
@@ -81,16 +70,6 @@ public class Block : MonoBehaviour
     public bool IsVisible()
     {
         return blockRenderer.enabled;
-    }
-
-    public static COLORTYPE GetNextNormalColor(COLORTYPE color)
-    {
-        COLORTYPE nextColor = color;
-        if (++nextColor > NORMALLAST)
-        {
-            nextColor = NORMALFIRST;
-        }
-        return nextColor;
     }
 
 }

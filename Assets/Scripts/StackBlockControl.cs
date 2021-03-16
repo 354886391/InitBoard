@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class StackBlockControl
 {
-    public GameObject BlockPrefab = null;
+    public GameObject BlockPrefab;
 
     public const int BlockNumX = 9;
     public const int BlockNumY = 7;
 
-    public StackBlock[,] Blocks;
-    public bool[] IsColorEnable;
-    public ConnectChecker Checker;
     public BlockFeeder Feeder;
+    public ConnectChecker Checker;
+    public StackBlock[,] Blocks;
+
 
     public void Create(Transform parentTrans)
     {
@@ -20,27 +20,21 @@ public class StackBlockControl
         {
             for (int x = 0; x < BlockNumX; x++)
             {
-                var go = GameObject.Instantiate(BlockPrefab);
-                go.name = x + " × " + y;
-                go.transform.SetParent(parentTrans);
+                var go = Object.Instantiate(BlockPrefab);
                 var block = go.GetComponent<StackBlock>();
+                block.name = x + " × " + y;
+                block.transform.SetParent(parentTrans);
                 block.Index.x = x;
                 block.Index.y = y;
                 block.SetUnused();
+                block.SetPosition(CalcBlockPosition(block.Index));
                 Blocks[x, y] = block;
-                block.transform.position = CalcBlockPosition(block.Index);
             }
         }
-
-        IsColorEnable = new bool[Block.NORMALNUM];
-        for (int i = 0; i < Block.NORMALNUM; i++)
-            IsColorEnable[i] = true;
-        IsColorEnable[(int)Block.COLORTYPE.PINK] = false;
-        Checker = new ConnectChecker();
-        Checker.Create(Blocks);
-
         Feeder = new BlockFeeder();
+        Checker = new ConnectChecker();
         Feeder.Create(this);
+        Checker.Create(Blocks);
 
         SetColorToAllBlock();
     }
