@@ -4,11 +4,11 @@ using UnityEngine;
 public class BlockFeeder
 {
     private StackBlockControl control;
-    // 开始时需要设置同色4方块排列的数量
+    /// 开始时需要设置同色4方块排列的数量
     public int ConnectArrowNum = 1;
-    // 当前方块放置每种颜色时的连接数
+    /// 当前方块放置每种颜色时的连接数
     protected List<int> connectNums;
-    // 出现颜色的候选值
+    /// 将要出现颜色的候选值
     protected List<Block.COLORTYPE> candidates;
 
     public void Create(StackBlockControl control)
@@ -24,21 +24,21 @@ public class BlockFeeder
     {
         var blocks = control.Blocks;
         var checker = control.Checker;
-        var colorType = blocks[x, y].ColorType;
-        int sel = 0;
+        var orginColor = blocks[x, y].ColorType;
+        var index = 0;
         InitCandidates();
-        for (int i = 0; i < Block.NORMALNUM; i++)
+        for (int i = 0; i < candidates.Count; i++)
         {
             checker.ClearAll();
-            blocks[x, y].SetColorType((Block.COLORTYPE)i);
+            blocks[x, y].SetColorType(candidates[i]);
             connectNums[i] = checker.CheckConnect(x, y);
         }
         if (ConnectArrowNum > 0)
         {
-            int maxNum = GetMaxConnectNum();
-            EraseCandidatesIfNot(maxNum);
-            sel = Random.Range(0, candidates.Count);
-            if (connectNums[(int)candidates[sel]] >= 4)
+            int maxConnectNum = GetMaxConnectNum();
+            EraseCandidatesIfNot(maxConnectNum);
+            index = Random.Range(0, candidates.Count);
+            if (connectNums[(int)candidates[index]] >= 4)
             {
                 --ConnectArrowNum;
             }
@@ -57,12 +57,12 @@ public class BlockFeeder
                 InitCandidates();
                 Debug.Log("give up");
             }
-            int maxNum = GetMaxConnectNum();
-            EraseCandidatesIfNot(maxNum);
-            sel = Random.Range(0, candidates.Count);
+            int maxConnectNum = GetMaxConnectNum();
+            EraseCandidatesIfNot(maxConnectNum);
+            index = Random.Range(0, candidates.Count);
         }
-        blocks[x, y].SetColorType(colorType);
-        return candidates[sel];
+        blocks[x, y].SetColorType(orginColor);
+        return candidates[index];
     }
 
     private void InitCandidates()
@@ -96,7 +96,7 @@ public class BlockFeeder
 
     private void EraseCandidatesIfNot(int connectNum)
     {
-        // ToDo 正反遍历结果不同???
+        // ToDo 正反遍历结果不同? -> 原因在 RemoveAt()
         for (int i = candidates.Count - 1; i >= 0; i--)
         {
             if (connectNums[(int)candidates[i]] != connectNum)
