@@ -49,14 +49,15 @@ public class StackBlockControl
                 indices.Add(new StackBlock.BlockIndex(x, y));
             }
         }
-
-        //for (int i = 0; i < indices.Count; i++)
-        //{
-        //    var temp = indices[i];
-        //    var index = Random.Range(0, indices.Count);
-        //    indices[i] = indices[index];
-        //    indices[index] = temp;
-        //}
+        Debug.Log("Indices Count " + indices.Count);
+        //打乱方块的位置
+        for (int i = 0; i < indices.Count; i++)
+        {
+            var temp = indices[i];
+            var index = Random.Range(0, indices.Count);
+            indices[i] = indices[index];
+            indices[index] = temp;
+        }
 
         Feeder.ConnectArrowNum = 1;
         foreach (var index in indices)

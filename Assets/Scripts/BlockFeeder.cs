@@ -25,7 +25,6 @@ public class BlockFeeder
         var blocks = control.Blocks;
         var checker = control.Checker;
         var orginColor = blocks[x, y].ColorType;
-        var index = 0;
         InitCandidates();
         for (int i = 0; i < candidates.Count; i++)
         {
@@ -33,6 +32,7 @@ public class BlockFeeder
             blocks[x, y].SetColorType(candidates[i]);
             connectNums[i] = checker.CheckConnect(x, y);
         }
+        int index;
         if (ConnectArrowNum > 0)
         {
             int maxConnectNum = GetMaxConnectNum();
