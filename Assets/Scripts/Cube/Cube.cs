@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum eColor
+public enum CubeColor
 {
     NONE = -1,
     CYAN = 0,
@@ -14,46 +14,65 @@ public enum eColor
 
     RED,
     GRAY,
+    NUM,
+}
+
+public struct CubePosition
+{
+    public int x;
+    public int y;
+
+    public CubePosition(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
 }
 
 public class Cube : MonoBehaviour
 {
-    private Renderer _renderer;
-    private Material[] _materials;
+    public CubeColor Color;
+    public CubePosition Position;
+    public Renderer ColorRenderer;
+    public Material[] ColorMaterials;
 
-    public eColor FirstColor = eColor.CYAN;
-    public eColor LastColor = eColor.PINK;
-
-    private void Awake()
+    public void SetUnused()
     {
-        _renderer = GetComponent<Renderer>();
+        SetColor(CubeColor.NONE);
+        SetVisable(false);
     }
 
-    public void SetColor(eColor color)
+    public void SetColor(CubeColor color)
     {
+        Color = color;
         switch (color)
         {
-            case eColor.RED:
-                _renderer.material = _materials[(int)color];
-                _renderer.material.SetFloat("_BlendRate", 0.0f);
+            case CubeColor.RED:
+                ColorRenderer.material = ColorMaterials[(int)color];
+                ColorRenderer.material.SetFloat("_BlendRate", 0.0f);
                 break;
-            case eColor.GRAY:
-                _renderer.material = _materials[(int)color];
-                _renderer.material.SetFloat("_BlendRate", 1.0f);
+            case CubeColor.GRAY:
+                ColorRenderer.material = ColorMaterials[(int)color];
+                ColorRenderer.material.SetFloat("_BlendRate", 1.0f);
                 break;
             default:
-                if (color >= FirstColor && color <= LastColor)
+                if (color >= CubeColor.CYAN && color <= CubeColor.PINK)
                 {
-                    _renderer.material = _materials[(int)color];
+                    ColorRenderer.material = ColorMaterials[(int)color];
+                    ColorRenderer.material.SetFloat("_BlendRate", 0.0f);
                 }
                 break;
         }
     }
 
-    public void SetVisible(bool visible)
+    public void SetVisable(bool isVisable)
     {
-        _renderer.enabled = visible;
+        ColorRenderer.enabled = isVisable;
     }
 
+    public void SetPosition(Vector3 position)
+    {
+        transform.localPosition = position;
+    }
 
 }
