@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Checker
 {
-    public void IsConnect(int x, int y)
+
+    CubeConnect[,] connectStatuses;
+
+    public void IsConnect(int x, int y, CubeColor prevColor, int connectCount)
     {
 
     }

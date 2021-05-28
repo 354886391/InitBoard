@@ -29,6 +29,14 @@ public struct CubePosition
     }
 }
 
+public enum CubeConnect
+{
+    NONE = -1,
+    UNCHECKED = 0,
+    CONNECTED,
+    NUM,
+}
+
 public class Cube : MonoBehaviour
 {
     public CubeColor Color;
