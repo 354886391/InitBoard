@@ -29,7 +29,7 @@ public struct CubePosition
     }
 }
 
-public enum CubeConnect
+public enum ConnectStatus
 {
     NONE = -1,
     UNCHECKED = 0,
